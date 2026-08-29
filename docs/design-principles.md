@@ -100,6 +100,12 @@ Human-in-the-loop 不等于“AI 不够聪明”。
 
 NovaWing 希望把人类从重复执行中移出，但保留在真正需要承担责任的决策点上。
 
+同时，人也不应该为了等一个偶发审批而一直守着控制台。进入 Human Required 时，系统可以保存当前 Session / checkpoint、暂停自动执行，并主动发送邮件通知开发者。
+
+> **自动化负责持续工作，通知机制负责在正确时间路由人的注意力，人类负责真正需要承担责任的决定。**
+
+邮件只是提醒，不自动等价于授权或权限提升。
+
 ---
 
 ## 7. 验证优先于自我评价
@@ -153,7 +159,7 @@ NovaWing 不希望核心价值绑定在某一个模型名称上。
 
 真正希望保留下来的，是：
 
-> **Specification → Decision → Execution → Evidence → Verification → Human Control → Recovery**
+> **Specification → Decision → Execution → Evidence → Verification → Human Control → Notification → Recovery**
 
 这条研发控制链。
 
