@@ -1,153 +1,175 @@
-# Demo & Evidence
+# Demo & Evidence｜真实运行证据
 
-本页用于集中展示 NovaWing Development Guardian 的真实运行证据。
+本页集中展示 NovaWing Development Guardian 的真实运行界面与关键工程能力。
 
-> 当前公开仓库不包含核心源码。后续可持续补充脱敏截图、录屏和任务案例，用来证明系统确实在真实研发流程中运行，而不是概念图或 Prompt Demo。
+> 核心源码仍保持私有。这里优先展示**真实运行证据**：Work Session、任务边界、执行阶段、日志、降级与恢复，以及 Human-in-the-loop 通知链路。
 
-## Recommended evidence
-
-建议优先补充以下内容，价值从高到低排列：
-
-### 1. Full task lifecycle
-
-展示一个完整 Task 从开始到完成的过程：
+## 一条完整的产品叙事
 
 ```text
-Task selected
-→ Brain reviewing
-→ Executor running
-→ Verification
-→ Brain review
-→ Completed
+创建 Work Session
+→ 按任务与路径边界执行
+→ Brain / Reviewer 持续决策
+→ Executor 完成真实工程操作
+→ Verification / Final Review
+→ 全程可观测
+→ 需要人工决策时安全挂起并邮件通知开发者
+→ 中断或基础设施异常时从 checkpoint 恢复
 ```
-
-最好使用同一个任务的连续截图，避免只展示零散 UI。
-
-### 2. Brain / Executor separation
-
-展示同一轮中的两个视角：
-
-- Brain / Reviewer 给出的 delegation / decision；
-- Executor 实际完成的代码、测试与结果摘要。
-
-目的不是公开完整 Prompt，而是让读者一眼看懂：
-
-> **GPT 在做判断，Claude Code / Codex 在做执行。**
-
-### 3. Verification evidence
-
-适合公开：
-
-- test passed / failed
-- typecheck
-- lint
-- build
-- deterministic repository checks
-
-不建议只放“AI says done”。
-
-### 4. Human approval
-
-展示系统遇到关键决策时进入 suspended / human-required 状态，以及人工确认后继续运行的过程。
-
-需要隐藏：
-
-- 完整内部审批协议；
-- 敏感命令；
-- 环境信息；
-- token / secret / private path。
-
-### 5. Recovery
-
-这是 NovaWing 很有辨识度的一类证据。
-
-推荐用三张图说明：
-
-1. 长任务中断；
-2. 系统识别可恢复 checkpoint；
-3. Executor 从已有进度继续，而不是从零重做。
-
-### 6. Control UI
-
-适合展示的信息：
-
-- 当前 phase / status；
-- 当前 task；
-- iteration；
-- recent activity；
-- verification 状态；
-- approval / recovery 状态。
 
 ---
 
-## Suggested public asset structure
+## 1. Launchpad：可信 Work Session 与恢复入口
 
-后续有截图后，可以按下面的路径上传：
+![NovaWing Launchpad](../assets/screenshots/01-launchpad-recoverable.webp)
+
+NovaWing Launchpad 是本地研发控制台入口，用于创建、查看和恢复 Trusted Work Session。
+
+这张图可以直接看到：
+
+- 已持久化的 `Fly-Weave` Work Session；
+- `RECOVERABLE` 可恢复状态；
+- Reviewer / Executor 的角色配置；
+- Auto Commit / Auto Push 等 Git 策略；
+- `Email Enabled` 邮件通知状态；
+- 中断后继续已有 Work Session，而不是重新从零开始。
+
+它表达的重点是：**NovaWing 管理的是持续存在的研发会话，而不是一次性的 AI 对话。**
+
+---
+
+## 2. 新建 Work Session：先定义边界，再允许 AI 动手
+
+![Create Work Session](../assets/screenshots/02-create-work-session.webp)
+
+创建 Work Session 时，开发者可以显式配置：
+
+- 项目目录与分支；
+- Task ID 与任务内容；
+- 允许修改路径；
+- Executor；
+- Soft Limit / Hard Limit；
+- Auto Commit / Auto Push；
+- 邮件通知；
+- 更高级的 Guardian 规则。
+
+这不是把一句 Prompt 直接扔给编码 Agent，而是先把任务变成一个**有身份、有范围、有时限、有执行策略的工程会话**。
+
+---
+
+## 3. Work Session 主控制台：任务、阶段与 Final Review
+
+![Work Session Final Review](../assets/screenshots/03-work-session-final-review.webp)
+
+Work Session 控制台持续展示：
+
+- 当前项目、分支与已运行时间；
+- 当前 Task 的完整上下文；
+- 当前 Guardian 阶段；
+- 当前轮次；
+- Recent Activity；
+- Execution Log。
+
+截图中的任务已进入 `Final Review`，说明执行完成之后仍需要独立的 Review，而不是 Executor 自己宣布 `done` 就结束。
+
+NovaWing 希望把复杂研发过程从黑盒变成：**当前在做什么、做到哪一步、为什么还没结束，都能被开发者看见。**
+
+---
+
+## 4. 可观测性：Recent Activity、Execution Log 与 Debug
+
+![Observability and Debug](../assets/screenshots/04-observability-debug.webp)
+
+长链路 Agent 系统如果只有最后一个答案，很难排查真实问题。
+
+NovaWing 因此保留多层级运行信息：
+
+- **Recent Activity**：面向人的阶段变化摘要；
+- **Execution Log**：更细粒度的 phase / task 执行记录；
+- **Debug Events**：结构化状态事件，用于定位状态迁移与基础设施问题。
+
+重点不是“日志很多”，而是让长时间、多轮的 AI 研发任务具备**可追踪、可回放、可审查**的工程基础。
+
+---
+
+## 5. Brain 暂时不可用：保留 checkpoint，而不是丢掉已有工作
+
+![Brain Degraded Recovery](../assets/screenshots/05-brain-degraded-recovery.webp)
+
+真实系统一定会遇到模型服务、网络或 transport 暂时不可用。
+
+截图中 NovaWing 将问题显式标记为：
 
 ```text
-assets/
-├─ overview/
-│  └─ guardian-control-ui.png
-├─ workflow/
-│  ├─ 01-brain-review.png
-│  ├─ 02-executor-running.png
-│  ├─ 03-verification.png
-│  └─ 04-completed.png
-├─ approval/
-│  ├─ suspended.png
-│  └─ resumed.png
-└─ recovery/
-   ├─ interrupted.png
-   ├─ checkpoint.png
-   └─ recovered.png
+BRAIN 暂时不可用
+Category: Brain Review · TRANSPORT
+Checkpoint: 已保存
 ```
 
-然后在本页追加：
+并提供“修复后恢复”入口。
 
-```md
-![Guardian Control UI](../assets/overview/guardian-control-ui.png)
-```
+恢复语义不是“再跑一遍”，而是：
+
+> **保留已经完成并验证过的 Executor 工作，在基础设施恢复后，从可信 checkpoint 继续 Brain Review。**
+
+这也是 Checkpoint / Recovery 被设计成一等能力的原因。
 
 ---
 
-## Demo video
+# Human-in-the-loop：需要人类判断时，主动邮件通知开发者
 
-录屏比源码更适合当前阶段的公开展示，因为它可以证明系统真实运行，同时控制知识产权披露范围。
+NovaWing 的自动化目标不是“无论如何都让 AI 自己决定”。
 
-推荐录制一个 2–5 分钟版本：
+当任务进入必须由人类判断的关键节点，例如：
+
+- 审批 / 驳回；
+- 无法安全自动裁决的下一步；
+- 需要开发者明确 continuation input；
+- 高风险动作需要确认；
+- 任务失败或进入需要人工处理的状态；
+
+NovaWing 会：
 
 ```text
-00:00  介绍 Task / Acceptance Criteria
-00:20  GPT Brain 判断下一步
-00:45  Claude Code / Codex 执行
-01:30  自动 Verification
-02:00  Brain Review
-02:30  完成 / 审批 / Recovery
+识别 Human Required
+→ 保存当前 Session / checkpoint
+→ 安全挂起自动执行
+→ 自动发送邮件通知开发者
+→ 开发者回来做明确决策
+→ 从原 Work Session 继续
+→ 再次进入验证 / Review
 ```
 
-如果有 10 分钟以上的完整运行录屏，可以保留为 long-form evidence；对招聘方则额外制作一个更短的核心流程版本。
+邮件的作用是**把人的注意力拉回来**，而不是替人授权。
+
+即使开发者通过人工输入允许任务继续，原有的 Goal、Constraints、Acceptance Criteria、Allowed Paths 与 Forbidden Paths 仍然保持有效，不会因为一次人工继续就自动扩大 Executor 权限。
+
+这意味着开发者不需要一直盯着 NovaWing 控制台：
+
+> **系统默认持续自动运行；只有真正需要人类判断时，才主动把人叫回来。**
 
 ---
 
-## Sanitization checklist
+## 这 5 张图共同证明了什么？
 
-公开任何截图、日志或视频前检查：
+它们不是五张孤立 UI，而是一条连续的工程证据链：
 
-- [ ] 没有 API Key / Token / Cookie
-- [ ] 没有本机用户名、绝对路径等隐私信息
-- [ ] 没有私有仓库 URL 或内部 package token
-- [ ] 没有完整 System Prompt / Reviewer Prompt
-- [ ] 没有尚未公开的核心算法或协议细节
-- [ ] 没有真实业务数据
-- [ ] 没有第三方受版权 / 保密约束的代码
-- [ ] 没有可能影响后续知识产权规划的关键实现细节
+| 证据 | 证明的能力 |
+| --- | --- |
+| Launchpad | Work Session 持久化、角色配置、可恢复、邮件通知 |
+| Create Work Session | Task / Path / Time / Git 等执行边界 |
+| Final Review | Executor 之后仍有独立 Review 阶段 |
+| Logs & Debug | 长任务过程可观测、可追踪、可审查 |
+| Degraded & Recovery | 基础设施异常不会直接丢失可信进度 |
+
+因此 NovaWing 当前最核心的价值并不是“又一个 AI Coding UI”，而是尝试把编码 Agent 放进一套：
+
+> **有规格、有任务边界、有角色分工、有证据、有验证、可人工介入、可中断恢复的研发执行闭环。**
 
 ---
 
-## What counts as convincing evidence?
+## 关于后续视频
 
-对技术负责人而言，最有说服力的通常不是代码行数，而是：
+截图先作为静态证据保留。
 
-> **一个真实复杂 Task 被规格化、执行、验证，在遇到问题后还能被审查、暂停或恢复，最终完成验收。**
-
-这也是本 Showcase 后续最值得持续补充的内容。
+下一阶段会补充真实运行录屏，用同一个 Task 展示从执行、Review、验证到审批 / Recovery 的连续过程。视频仍会遵循公开边界：不公开核心源码、完整 Prompt / 协议和可能影响知识产权规划的关键实现。
