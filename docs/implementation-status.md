@@ -18,6 +18,7 @@
 | Allowed / forbidden paths | ✅ Implemented | 将允许修改范围与禁止路径作为硬边界 |
 | Iterative review loop | ✅ Implemented | Brain 可根据证据继续、要求修订、阻塞或完成任务 |
 | Human-required state | ✅ Implemented | 无法安全自动决策时挂起并等待可信人工输入 |
+| Human decision email notification | ✅ Implemented | 进入需人工审批、继续、失败等关键状态时，可主动邮件通知开发者 |
 | Approval continuation | ✅ Implemented | 人工决策后可继续既有 Session，而不是隐式扩大权限 |
 | Checkpoint / Recovery | ✅ Implemented | 支持从已验证进度继续执行，避免无条件从头开始 |
 | Work Session lifecycle | ✅ Implemented | 管理准备、执行、Review、验证、恢复等长任务阶段 |
@@ -30,6 +31,28 @@
 - ✅ **Implemented**：已存在实际工程实现或正在真实任务中使用。
 - 🟡 **Evolving**：已有能力基础，但接口、策略或覆盖范围仍在迭代。
 - 🔵 **Planned / Research**：明确方向，但不把尚未完成的能力包装成已实现。
+
+---
+
+## Human-in-the-loop notification
+
+Human-required 不应该等价于“开发者必须一直盯着控制台”。
+
+当任务进入需要人类明确判断的节点时，NovaWing 可以先保存当前 Work Session / checkpoint，安全暂停自动执行，然后主动邮件通知开发者。
+
+典型链路：
+
+```text
+Human Required
+→ Persist Session / Checkpoint
+→ Suspend automation
+→ Email developer
+→ Explicit human decision
+→ Resume existing session
+→ Verify / Review again
+```
+
+邮件是**注意力路由机制**，不是权限机制：收到邮件或提交一次 continuation input，并不会自动修改原任务的 Goal、Constraints、Acceptance Criteria、Allowed Paths 或 Forbidden Paths。
 
 ---
 
@@ -46,7 +69,7 @@ NovaWing 当前不会把下列内容包装成已经完成：
 
 NovaWing 的目标更务实：
 
-> **把 AI 编码能力放进一套有规格、有边界、有证据、有验证、可暂停、可恢复的工程闭环里。**
+> **把 AI 编码能力放进一套有规格、有边界、有证据、有验证、可暂停、可通知、可恢复的工程闭环里。**
 
 ---
 
@@ -57,8 +80,9 @@ NovaWing 的目标更务实：
 1. 一个复杂 Task 能否被规格化并稳定执行？
 2. Executor 的完成声明能否被独立证据验证？
 3. 越界或风险动作能否被阻止或转人工？
-4. 中断后能否从可信状态继续？
-5. 多轮执行是否仍然保持原始目标、约束和验收标准？
-6. 新 Executor 接入时，是否能复用稳定的 Brain / Task / Verification 合约？
+4. 需要人类判断时，系统能否安全停下并主动通知，而不是要求人持续值守？
+5. 中断后能否从可信状态继续？
+6. 多轮执行是否仍然保持原始目标、约束和验收标准？
+7. 新 Executor 接入时，是否能复用稳定的 Brain / Task / Verification 合约？
 
 这也是 NovaWing 当前研发的主要评价框架。
