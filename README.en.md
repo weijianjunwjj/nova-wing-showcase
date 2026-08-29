@@ -1,5 +1,7 @@
 # NovaWing Development Guardian
 
+[中文](README.md)
+
 > **Spec-driven AI software engineering orchestration.**  
 > GPT acts as the Brain / Reviewer; Claude Code and Codex act as Executors. Specifications, task contracts, deterministic verification, human approval, and recovery mechanisms turn AI coding into a controlled engineering workflow.
 
@@ -7,6 +9,19 @@
 
 > [!IMPORTANT]
 > This repository is intentionally a showcase rather than the source repository. Core implementation, complete prompts/protocols, internal control strategies, and details related to ongoing IP / patent planning remain private.
+
+## Start here
+
+For a fast review of the project:
+
+1. [`Brain / Executor`](docs/brain-executor.md) — why reasoning and repository execution are separated.
+2. [`Spec-driven Development`](docs/spec-driven-development.md) — how requirements become executable specifications.
+3. [`Task Contract`](docs/task-contract.md) — why Task 01–99 is more than a todo list.
+4. [`Verification & Recovery`](docs/verification-recovery.md) — how completion is verified and interrupted work resumes.
+5. [`Implementation Status`](docs/implementation-status.md) — what is implemented, evolving, or still planned.
+6. [`Technical Review Guide`](docs/technical-review-guide.md) — a practical evaluation path for technical reviewers.
+
+> Most detailed documents are currently written in Chinese; the architecture diagrams and terminology remain intentionally language-neutral.
 
 ## What problem does NovaWing solve?
 
@@ -79,6 +94,20 @@ The value is not “more agents.” The value is a durable control chain:
 
 > **Specification → Decision → Execution → Evidence → Verification → Human Control → Recovery**
 
+## What this showcase is trying to prove
+
+The public repository is designed to demonstrate that NovaWing is not just a diagram or a model wrapper. A technical reviewer should be able to see a consistent engineering thesis across:
+
+- specification and task boundaries;
+- Brain / Executor role separation;
+- execution evidence;
+- deterministic verification;
+- human-required states;
+- checkpoint / recovery semantics;
+- long-running work-session lifecycle.
+
+The next highest-value additions to this repository are sanitized runtime evidence, task walkthroughs, and short demo recordings rather than partial copies of the private core source.
+
 ## Public / private boundary
 
 This repository may contain:
@@ -102,9 +131,16 @@ See [`docs/disclosure.md`](docs/disclosure.md) for the disclosure policy.
 ## Documentation
 
 - [`Architecture`](docs/architecture.md)
+- [`Brain / Executor`](docs/brain-executor.md)
+- [`Spec-driven Development`](docs/spec-driven-development.md)
+- [`Task Contract`](docs/task-contract.md)
 - [`Workflow`](docs/workflow.md)
+- [`Verification & Recovery`](docs/verification-recovery.md)
 - [`Design Principles`](docs/design-principles.md)
+- [`Implementation Status`](docs/implementation-status.md)
+- [`Technical Review Guide`](docs/technical-review-guide.md)
 - [`Demo & Evidence`](docs/demo.md)
+- [`Public Roadmap`](docs/roadmap.md)
 - [`Technical FAQ`](docs/faq.md)
 - [`Public Disclosure Boundary`](docs/disclosure.md)
 
