@@ -75,6 +75,7 @@ NovaWing 不追求让 LLM 替代 CI，而是让 LLM 和确定性验证各做擅�
 测试失败
 模型达到执行轮次限制
 进程中断
+Brain transport 暂时不可用
 人工审批等待
 外部依赖缺失
 当前权限不足
@@ -83,7 +84,7 @@ NovaWing 不追求让 LLM 替代 CI，而是让 LLM 和确定性验证各做擅�
 
 如果系统只设计“成功路径”，它就很难真正承担复杂研发任务。
 
-因此 NovaWing 把 blocked / human-required / recovery 等状态当成工作流的一部分，而不是异常之后临时补丁。
+因此 NovaWing 把 blocked / human-required / degraded / recovery 等状态当成工作流的一部分，而不是异常之后临时补丁。
 
 ---
 
@@ -136,6 +137,26 @@ NovaWing 更倾向于：
 
 这是 Human-in-the-loop 容易被忽略但很重要的一点。
 
+### 让人回来，但不让人一直守着
+
+当 suspended decision 必须由人解决时，NovaWing 可以先保存 Session / checkpoint，再自动邮件通知开发者：
+
+```text
+Human Required
+→ Persist trusted state
+→ Suspend automation
+→ Email developer
+→ Explicit human input
+→ Resume existing session
+```
+
+这里必须区分两个概念：
+
+- **Notification**：把开发者的注意力拉回来；
+- **Authorization / Continuation**：开发者实际提交的可信决定。
+
+收到邮件本身不会改变任务权限，也不会使 Executor 获得更大的修改范围。
+
 ---
 
 ## 6. Recovery loop
@@ -150,8 +171,9 @@ flowchart TD
 
     B -->|Yes| F["Capture trusted progress"]
     F --> G{"Needs human decision?"}
-    G -->|Yes| H["Suspend / Approval"]
-    H --> I["Trusted continuation input"]
+    G -->|Yes| H["Suspend safely"]
+    H --> N["Email Developer"]
+    N --> I["Trusted continuation input"]
     G -->|No| J["Recovery decision"]
     I --> J
     J --> K["Resume from checkpoint"]
@@ -160,14 +182,26 @@ flowchart TD
 
 ---
 
-## 7. Why this matters
+## 7. A real degraded-state example
+
+公开 Showcase 中已经展示一个真实界面：Brain transport 暂时不可用时，Work Session 明确进入 degraded 状态，并显示 checkpoint 已保存与“修复后恢复”入口。
+
+这类场景要表达的不是“系统不会出错”，而是：
+
+> **出错以后，已有可信工作不会因为控制层短暂不可用而被无条件丢弃。**
+
+真实截图见 [`demo.md`](demo.md)。
+
+---
+
+## 8. Why this matters
 
 短 Prompt 的核心指标通常是“第一次回答好不好”。
 
 长链路研发任务的指标则不同：
 
-> **它能不能在第 3、5、10 轮仍然记得目标，接受验证，处理失败，并安全地继续。**
+> **它能不能在第 3、5、10 轮仍然记得目标，接受验证，处理失败，在真正需要时找到人，并安全地继续。**
 
 因此 NovaWing 更关注的不是单次生成质量，而是：
 
-**Reliability · Control · Evidence · Continuity**
+**Reliability · Control · Evidence · Continuity · Human Attention Routing**
