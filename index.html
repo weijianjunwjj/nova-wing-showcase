@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="NovaWing Development Guardian — Spec-driven AI software engineering orchestration." />
+  <title>NovaWing Development Guardian</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: #0d1a2d;
+      --panel-2: #10223a;
+      --text: #eef6ff;
+      --muted: #9db0c8;
+      --line: rgba(255,255,255,.10);
+      --accent: #6ee7ff;
+      --accent-2: #9b8cff;
+      --good: #7ee2a8;
+      --warn: #ffd37e;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(110,231,255,.12), transparent 34%),
+        radial-gradient(circle at 90% 10%, rgba(155,140,255,.12), transparent 30%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+    .wrap { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: rgba(8,17,31,.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand { font-weight: 760; letter-spacing: .2px; }
+    .nav-links { display: flex; gap: 18px; font-size: 14px; color: var(--muted); }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--text); }
+
+    header { padding: 96px 0 72px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid rgba(110,231,255,.28);
+      background: rgba(110,231,255,.06);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: 1.04;
+      letter-spacing: -2.6px;
+    }
+
+    .gradient {
+      background: linear-gradient(110deg, var(--accent), #d5f8ff 45%, var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead { max-width: 860px; color: var(--muted); font-size: clamp(18px, 2.1vw, 23px); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+    .btn.primary { color: #04121b; background: var(--accent); border-color: transparent; }
+
+    .note {
+      margin-top: 26px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,211,126,.20);
+      border-radius: 12px;
+      color: #d7c8a7;
+      background: rgba(255,211,126,.05);
+      font-size: 14px;
+    }
+
+    section { padding: 72px 0; border-top: 1px solid var(--line); }
+    .section-head { max-width: 760px; margin-bottom: 34px; }
+    .kicker { color: var(--accent); font-weight: 750; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 8px 0 10px; font-size: clamp(30px, 4vw, 48px); letter-spacing: -1px; }
+    .muted { color: var(--muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card {
+      grid-column: span 4;
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+    .card.wide { grid-column: span 6; }
+    .card h3 { margin: 2px 0 8px; font-size: 19px; }
+    .card p { margin: 0; color: var(--muted); }
+    .tag { font-size: 12px; color: var(--accent); font-weight: 750; text-transform: uppercase; letter-spacing: .08em; }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+      align-items: stretch;
+    }
+    .step {
+      position: relative;
+      padding: 16px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .step strong { display: block; color: var(--text); margin-bottom: 4px; }
+
+    .quote {
+      margin: 28px 0 0;
+      padding: 24px;
+      border-left: 3px solid var(--accent);
+      background: rgba(110,231,255,.04);
+      border-radius: 0 16px 16px 0;
+      font-size: 20px;
+    }
+
+    .status { display: flex; gap: 10px; align-items: center; margin-top: 10px; color: var(--muted); font-size: 14px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 18px rgba(126,226,168,.6); }
+
+    .docs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .doc-link {
+      display: block;
+      padding: 16px;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+    }
+    .doc-link:hover { border-color: rgba(110,231,255,.35); background: rgba(110,231,255,.035); }
+    .doc-link strong { display: block; }
+    .doc-link span { display: block; margin-top: 4px; color: var(--muted); font-size: 14px; }
+
+    footer { padding: 38px 0 54px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 880px) {
+      .card, .card.wide { grid-column: span 12; }
+      .pipeline { grid-template-columns: 1fr; }
+      .docs { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      header { padding-top: 72px; }
+      h1 { letter-spacing: -1.5px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="brand">NovaWing Development Guardian</div>
+      <div class="nav-links">
+        <a href="#architecture">Architecture</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#principles">Principles</a>
+        <a href="#docs">Docs</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="wrap">
+      <span class="eyebrow">PUBLIC SHOWCASE · CORE PRIVATE</span>
+      <h1>让 AI 从“会写代码”，走向<span class="gradient">可持续承担研发任务</span>。</h1>
+      <p class="lead">
+        NovaWing Development Guardian 是一套面向复杂研发任务的 AI 自动化协作系统：GPT 作为 Brain / Reviewer 负责理解、判断与审查，Claude Code / Codex 作为 Executor 负责真实工程执行；规格、任务契约、确定性验证、人工审批与恢复机制共同组成研发闭环。
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="README.md">阅读完整说明</a>
+        <a class="btn" href="docs/technical-review-guide.md">Technical Review Guide</a>
+        <a class="btn" href="docs/implementation-status.md">Implementation Status</a>
+      </div>
+      <div class="status"><span class="dot"></span> Active Development</div>
+      <div class="note">本页面只展示公开安全的高层架构与工程理念。核心源码、完整 Prompt / 协议、内部控制策略以及可能涉及后续知识产权规划的实现细节保持私有。</div>
+    </div>
+  </header>
+
+  <section id="architecture">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Architecture</div>
+        <h2>不是三个模型轮流聊天，而是一套有职责边界的研发组织。</h2>
+        <p class="muted">最核心的设计是把“规格、决策、执行、证据、验证和最终控制权”拆成不同角色。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="tag">Specification</div>
+          <h3>Spec Kit</h3>
+          <p>先把需求、约束与验收标准变成稳定规格，让长任务不依赖聊天上下文临时猜测。</p>
+        </article>
+        <article class="card">
+          <div class="tag">Task Contract</div>
+          <h3>Task 01–99</h3>
+          <p>把复杂目标拆成有稳定身份、明确边界、可追踪且可验收的研发任务单元。</p>
+        </article>
+        <article class="card">
+          <div class="tag">Reasoning</div>
+          <h3>GPT · Brain / Reviewer</h3>
+          <p>理解任务事实、判断下一步、审查执行证据，并决定继续、修订、暂停或完成。</p>
+        </article>
+        <article class="card wide">
+          <div class="tag">Execution</div>
+          <h3>Claude Code / Codex · Executor</h3>
+          <p>真正读取仓库、修改文件、增加测试、运行允许命令并返回执行证据，但不拥有自行降低验收标准的权力。</p>
+        </article>
+        <article class="card wide">
+          <div class="tag">Control Plane</div>
+          <h3>Verification · Approval · Recovery</h3>
+          <p>用确定性检查验证事实，在关键节点保留人工控制，并让中断任务从可信进度继续，而不是无条件重开。</p>
+        </article>
+      </div>
+      <div class="quote">Spec 定义目标，Brain 做判断，Executor 做执行，Verification 给证据，人类保留关键控制权。</div>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Workflow</div>
+        <h2>从一句需求，到一个可验收的工程闭环。</h2>
+      </div>
+      <div class="pipeline">
+        <div class="step"><strong>Specification</strong>目标 / 约束 / 验收</div>
+        <div class="step"><strong>Task Contract</strong>可追踪任务</div>
+        <div class="step"><strong>Brain</strong>判断下一步</div>
+        <div class="step"><strong>Executor</strong>真实执行</div>
+        <div class="step"><strong>Evidence</strong>变更 / 命令 / 结果</div>
+        <div class="step"><strong>Verification</strong>确定性验证</div>
+        <div class="step"><strong>Review</strong>继续 / 审批 / 恢复 / 完成</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="principles">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Engineering Principles</div>
+        <h2>AI 可以很强，但强能力更需要工程约束。</h2>
+      </div>
+      <div class="grid">
+        <article class="card"><h3>Spec before execution</h3><p>先定义“要做什么”和“什么算做完”，再让 Agent 进入仓库。</p></article>
+        <article class="card"><h3>Evidence over claims</h3><p>Executor 可以提交答卷，但不能仅凭一句“done”给自己判满分。</p></article>
+        <article class="card"><h3>Hard boundaries</h3><p>允许路径、禁止路径、约束和验收标准是执行边界，不是建议。</p></article>
+        <article class="card"><h3>Deterministic verification</h3><p>测试、类型检查、构建和仓库检查交给更稳定的确定性工具。</p></article>
+        <article class="card"><h3>Human at critical decisions</h3><p>系统必须有能力安全停下来，而不是在信息不足时强行自动化。</p></article>
+        <article class="card"><h3>Recover instead of restart</h3><p>长任务中断后优先保留已验证进度，让 continuation 真正延续已有工作。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="docs">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Documentation</div>
+        <h2>想看深一点，可以从这里开始。</h2>
+      </div>
+      <div class="docs">
+        <a class="doc-link" href="docs/brain-executor.md"><strong>Brain / Executor</strong><span>为什么 GPT 是 Brain，而 Claude Code / Codex 是执行层。</span></a>
+        <a class="doc-link" href="docs/spec-driven-development.md"><strong>Spec-driven Development</strong><span>如何把模糊需求变成可执行规格。</span></a>
+        <a class="doc-link" href="docs/task-contract.md"><strong>Task Contract</strong><span>Task 01–99 为什么不是普通 Todo 编号。</span></a>
+        <a class="doc-link" href="docs/verification-recovery.md"><strong>Verification & Recovery</strong><span>如何验证 Agent，以及中断后如何继续。</span></a>
+        <a class="doc-link" href="docs/case-study-task-lifecycle.md"><strong>Sanitized Case Study</strong><span>一个公开安全的完整 Task 生命周期示例。</span></a>
+        <a class="doc-link" href="docs/implementation-status.md"><strong>Implementation Status</strong><span>明确区分已实现、演进中与规划能力。</span></a>
+        <a class="doc-link" href="docs/technical-review-guide.md"><strong>Technical Review Guide</strong><span>给技术负责人 / 面试官的评估路径。</span></a>
+        <a class="doc-link" href="docs/demo.md"><strong>Demo & Evidence</strong><span>后续运行截图、录屏和真实任务证据的展示位置。</span></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      NovaWing Development Guardian · Public Showcase · Core implementation remains private.<br />
+      Copyright © 2026 Wei Jianjun. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
