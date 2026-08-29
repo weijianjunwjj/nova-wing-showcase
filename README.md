@@ -1,5 +1,7 @@
 # NovaWing Development Guardian
 
+[English](README.en.md)
+
 > **Spec-driven AI software engineering orchestration**  
 > 让 GPT 负责“理解、判断与审查”，让 Claude Code / Codex 负责“执行”，并通过规格、任务边界、验证、审批与恢复机制，把 AI 编码纳入可控制、可验证、可持续执行的研发闭环。
 
@@ -7,6 +9,8 @@
 
 > [!IMPORTANT]
 > 本仓库仅用于公开展示 NovaWing Development Guardian 的产品理念、系统架构与脱敏后的工程实践。核心源码、完整 Prompt / 协议、关键执行策略及可能涉及后续知识产权 / 专利规划的实现细节保持私有。
+
+**快速阅读：** [架构](docs/architecture.md) · [研发流程](docs/workflow.md) · [设计原则](docs/design-principles.md) · [Demo 与证据](docs/demo.md) · [技术 FAQ](docs/faq.md) · [公开边界](docs/disclosure.md)
 
 ---
 
@@ -173,11 +177,13 @@ NovaWing 的工作重点，就是把这些问题从“Prompt 技巧”提升为 
 ```text
 nova-wing-showcase/
 ├─ README.md
+├─ README.en.md
 ├─ docs/
 │  ├─ architecture.md       # 架构与角色边界
 │  ├─ workflow.md           # 从 Spec 到执行闭环
 │  ├─ design-principles.md  # 核心设计原则
 │  ├─ demo.md               # Demo / 截图展示位
+│  ├─ faq.md                # 技术 FAQ
 │  └─ disclosure.md         # 公开边界说明
 └─ NOTICE.md
 ```
