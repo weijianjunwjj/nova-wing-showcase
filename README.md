@@ -10,7 +10,17 @@
 > [!IMPORTANT]
 > 本仓库仅用于公开展示 NovaWing Development Guardian 的产品理念、系统架构与脱敏后的工程实践。核心源码、完整 Prompt / 协议、关键执行策略及可能涉及后续知识产权 / 专利规划的实现细节保持私有。
 
-**快速阅读：** [架构](docs/architecture.md) · [研发流程](docs/workflow.md) · [设计原则](docs/design-principles.md) · [Demo 与证据](docs/demo.md) · [技术 FAQ](docs/faq.md) · [公开边界](docs/disclosure.md)
+### Start here
+
+如果只想快速理解这个项目，建议按下面顺序阅读：
+
+**3 分钟：** [Brain / Executor](docs/brain-executor.md) → [Spec-driven Development](docs/spec-driven-development.md) → [Task Contract](docs/task-contract.md)
+
+**继续深入：** [Verification & Recovery](docs/verification-recovery.md) · [完整架构](docs/architecture.md) · [研发流程](docs/workflow.md) · [设计原则](docs/design-principles.md)
+
+**评估项目：** [Implementation Status](docs/implementation-status.md) · [Technical Review Guide](docs/technical-review-guide.md) · [Demo & Evidence](docs/demo.md) · [Public Roadmap](docs/roadmap.md)
+
+**其他：** [技术 FAQ](docs/faq.md) · [公开边界](docs/disclosure.md)
 
 ---
 
@@ -29,6 +39,10 @@ NovaWing 将软件研发中的“决策”和“执行”拆开：
 - **Spec Kit · Specification Layer**：将需求、约束和验收标准固化为可执行规范。
 - **Task 01–99 · Task Contract**：把复杂目标拆成可追踪、可验收的研发任务单元。
 - **Verification / Approval / Recovery**：确保任务不是“AI 说完成就完成”，而是经过证据、校验与必要的人类控制。
+
+一句话：
+
+> **GPT 负责想和判断，Claude Code / Codex 负责真正动手；Spec 与 Task 规定要做什么和什么算做完，Guardian 负责让整个过程可控、可验证、可恢复。**
 
 ---
 
@@ -57,9 +71,9 @@ flowchart TD
     J --> C
 ```
 
-一句话理解：
+可以把它理解成一个小型 AI 研发团队：
 
-> **Spec Kit 是施工图，Task 01–99 是工单，GPT 是技术负责人 / Reviewer，Claude Code 与 Codex 是执行工程师，Guardian 则负责让整个过程不越界、不失控、不靠“自报完成”。**
+> **Spec Kit 是施工图，Task 01–99 是工单，GPT 是技术负责人 / Reviewer，Claude Code 与 Codex 是执行工程师，Verification 是质量门禁，人类保留关键决策权。**
 
 ---
 
@@ -86,6 +100,30 @@ GPT Review：继续 / 修订 / 暂停 / 完成
 ```
 
 NovaWing 的目标不是追求一次 Prompt 的“惊艳输出”，而是追求 **长链路任务的可靠闭环**。
+
+---
+
+## What Makes It Different?
+
+很多 AI Coding 工作流的核心是：
+
+```text
+Prompt → Agent → Code
+```
+
+NovaWing 更关注：
+
+```text
+Specification
+→ Task Contract
+→ Brain Decision
+→ Executor Action
+→ Execution Evidence
+→ Deterministic Verification
+→ Review / Approval / Recovery
+```
+
+区别不在于“用了更多 Agent”，而在于把软件工程里原本隐含的 **职责、边界、证据和失败路径** 显式化。
 
 ---
 
@@ -131,6 +169,8 @@ Brain 负责“想、判断、审查”，Executor 负责“做”。避免同�
 | Checkpoint / Recovery | 支持复杂任务中断后的可信延续 |
 | Work session lifecycle | 管理长时间、多轮研发任务的状态演进 |
 
+当前哪些能力已经落地、哪些仍在演进，可直接查看 **[Implementation Status](docs/implementation-status.md)**。
+
 ---
 
 ## Why Not Just Use Claude Code / Codex Directly?
@@ -148,6 +188,19 @@ Claude Code、Codex 等编码 Agent 已经非常强，但复杂软件工程的�
 - 如何避免 Executor 既当运动员又当裁判？
 
 NovaWing 的工作重点，就是把这些问题从“Prompt 技巧”提升为 **明确的软件工程机制**。
+
+---
+
+## For Technical Reviewers
+
+如果你正在从技术角度评估这个项目，可以重点看四件事：
+
+1. **规格是否真实约束执行**，而不是只作为背景文档；
+2. **Brain 与 Executor 是否真正职责分离**，而不是三个模型轮流聊天；
+3. **完成状态是否有独立证据支撑**，而不是 Agent 自己说 done；
+4. **失败路径是否被设计**，包括审批、挂起、中断和恢复。
+
+完整评估路径见 **[Technical Review Guide](docs/technical-review-guide.md)**。
 
 ---
 
@@ -170,6 +223,8 @@ NovaWing 的工作重点，就是把这些问题从“Prompt 技巧”提升为 
 - 未公开的知识产权与专利相关细节
 - 可能暴露真实项目路径、密钥、环境或业务数据的内容
 
+更完整的公开策略见 [disclosure.md](docs/disclosure.md)。
+
 ---
 
 ## Repository Map
@@ -179,12 +234,19 @@ nova-wing-showcase/
 ├─ README.md
 ├─ README.en.md
 ├─ docs/
-│  ├─ architecture.md       # 架构与角色边界
-│  ├─ workflow.md           # 从 Spec 到执行闭环
-│  ├─ design-principles.md  # 核心设计原则
-│  ├─ demo.md               # Demo / 截图展示位
-│  ├─ faq.md                # 技术 FAQ
-│  └─ disclosure.md         # 公开边界说明
+│  ├─ architecture.md            # 系统架构与角色边界
+│  ├─ brain-executor.md          # GPT Brain 与 Executor 分工
+│  ├─ spec-driven-development.md # Spec Kit / 规格驱动开发
+│  ├─ task-contract.md           # Task 01–99 与任务契约
+│  ├─ workflow.md                # 从 Spec 到执行闭环
+│  ├─ verification-recovery.md   # 验证、失败与恢复
+│  ├─ design-principles.md       # 核心设计原则
+│  ├─ implementation-status.md   # 当前能力落地状态
+│  ├─ technical-review-guide.md  # 技术负责人评估路径
+│  ├─ demo.md                    # Demo / 截图 / 证据展示位
+│  ├─ roadmap.md                 # 公开安全的演进方向
+│  ├─ faq.md                     # 技术 FAQ
+│  └─ disclosure.md              # 公开边界说明
 └─ NOTICE.md
 ```
 
@@ -209,6 +271,8 @@ NovaWing 不是一个 IDE 插件，也不是对某个模型 API 的简单封装�
 ## About This Showcase
 
 这个公开仓库的目的，是让招聘方、技术负责人和潜在合作方能够理解 NovaWing 的真实方向与工程深度，同时不要求公开核心知识产权。
+
+这个仓库会优先增加 **运行证据、脱敏案例和可验证结果**，而不是把私有核心源码复制一份删减后公开。
 
 如果你正在评估这个项目，最重要的三个关键词是：
 
