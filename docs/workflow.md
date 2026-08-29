@@ -137,11 +137,25 @@ complete → 验收完成
 
 ---
 
-## 7. Human approval
+## 7. Human approval & email notification
 
 不是所有工程决策都应该自动化。
 
-当遇到需要用户明确授权的情况，工作会话应安全挂起，并把必要信息交给人类，而不是通过扩大 Agent 权限“想办法继续”。
+当遇到需要用户明确授权、审批 / 驳回、人工 continuation，或系统无法安全自动裁决的情况，Work Session 会先进入 Human Required / suspended 状态，而不是通过扩大 Agent 权限“想办法继续”。
+
+NovaWing 会把这个过程组织成一条明确链路：
+
+```text
+需要人类判断
+→ 保存当前 Session / checkpoint
+→ 暂停自动执行
+→ 自动邮件通知开发者
+→ 开发者回来做明确决策
+→ 继续既有 Session
+→ 再次 Verification / Review
+```
+
+这里的邮件不是“远程自动授权”。它只是一个**注意力路由机制**：开发者无需一直盯着控制台，只有真正需要人类判断时，系统才主动把人叫回来。
 
 人工输入用于解决当前 suspended decision，但不会自动改变原任务的：
 
@@ -183,6 +197,8 @@ flowchart LR
 - 不因为恢复而扩大权限；
 - 对可能产生副作用的动作保持谨慎。
 
+真实界面可查看 [Demo & Evidence](demo.md)。
+
 ---
 
 ## 9. Completion
@@ -211,6 +227,7 @@ flowchart LR
 | 开发工程师 | Claude Code / Codex Executor |
 | CI / Tests | Verification |
 | 审批人 | Human Approval |
+| 通知 / On-call attention | Email Notification |
 | Git / Session State | Checkpoint / Recovery |
 
-区别在于，这些角色被组织进了一条可编排、可审查的 AI-native 工作流中。
+区别在于，这些角色被组织进了一条可编排、可审查、可通知、可恢复的 AI-native 工作流中。
