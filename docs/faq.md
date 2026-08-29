@@ -72,13 +72,48 @@ Human Approval 是研发控制面的一部分。
 
 公开 Showcase 不披露具体内部风险规则和授权协议。
 
+## Do I have to keep watching the NovaWing console?
+
+不需要。
+
+当 Work Session 正常运行时，开发者可以离开控制台。真正进入需要人工审批、人工 continuation、失败处理或其他必须由人判断的关键状态时，NovaWing 可以：
+
+```text
+Human Required
+→ 保存 Session / checkpoint
+→ 暂停自动执行
+→ 自动邮件通知开发者
+→ 人工明确决策
+→ 从既有 Session 继续
+```
+
+目标不是把人排除在流程之外，而是让**人的注意力只出现在值得人判断的节点**。
+
+## Does clicking an email or replying to it grant the Agent more permissions?
+
+不会把“收到通知”设计成“自动授权”。
+
+邮件承担的是注意力路由：告诉开发者“这里需要你做决定”。真正 continuation 仍然必须形成明确、可信、可审查的人类输入。
+
+即使人工允许当前任务继续，也不会自动改变原任务的：
+
+- Goal
+- Constraints
+- Acceptance Criteria
+- Allowed Paths
+- Forbidden Paths
+
+因此：
+
+> **Notification ≠ Authorization。**
+
 ## What happens if an Agent session is interrupted?
 
 NovaWing 的方向是基于可信 checkpoint 继续已有任务，保留已经验证的进度，并再次校验恢复后的状态。
 
 Recovery 不是简单地把旧 Prompt 再发一次。
 
-具体 checkpoint schema 和恢复策略保持私有。
+真实界面已经展示了 Brain transport 暂时不可用时的 degraded / recovery 状态；具体 checkpoint schema 和恢复策略保持私有。
 
 ## Is this a multi-agent framework?
 
@@ -90,7 +125,7 @@ Recovery 不是简单地把旧 Prompt 再发一次。
 
 不是核心定位。
 
-IDE / Control UI 可以成为交互入口，但 NovaWing 的核心价值位于任务规格、决策、执行、验证、审批和恢复之间的控制链路。
+IDE / Control UI 可以成为交互入口，但 NovaWing 的核心价值位于任务规格、决策、执行、验证、审批、通知和恢复之间的控制链路。
 
 ## Is the project open source?
 
@@ -104,7 +139,9 @@ IDE / Control UI 可以成为交互入口，但 NovaWing 的核心价值位于�
 
 1. 完整架构解释；
 2. 真实运行 Demo / 截图；
-3. Task lifecycle 与 verification 记录；
+3. Task lifecycle、日志、verification 与 recovery 记录；
 4. 面试中对具体 failure case、trade-off 与设计选择的深入讨论。
+
+当前 Showcase 已公开 Launchpad、Work Session 创建、Final Review、Execution Log / Debug、Brain degraded / Recovery 等真实界面。
 
 一个真实设计并实现过系统的人，通常能够解释“为什么这么做、哪里失败过、为什么不能简单换一种做法”，这比展示大量代码更能说明工程深度。
