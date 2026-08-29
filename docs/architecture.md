@@ -15,7 +15,10 @@ flowchart LR
     D --> R
     R --> V["Deterministic Verification"]
     V --> B
-    B --> H["Human Control"]
+    B --> H["Human Required"]
+    H --> N["Email Developer"]
+    N --> U["Explicit Human Decision"]
+    U --> B
     B --> K["Checkpoint / Recovery"]
 ```
 
@@ -92,7 +95,7 @@ NovaWing 倾向使用可以重复执行的 deterministic verification，例如�
 
 验证层的目标是把“看起来对”尽可能转换成“机器可复验”。
 
-### Human Control
+### Human Control & Notification
 
 当系统遇到超出自动决策权限的情况时，应暂停而不是硬猜。
 
@@ -104,9 +107,22 @@ NovaWing 倾向使用可以重复执行的 deterministic verification，例如�
 - 无法自动验证的不可逆操作
 - 用户必须明确授权的继续条件
 
+NovaWing 不要求开发者一直盯着控制台。进入 Human Required 后，可以先持久化当前 Work Session / checkpoint，暂停自动执行，并**主动邮件通知开发者**。
+
+```text
+Human Required
+→ Persist Session / Checkpoint
+→ Suspend Automation
+→ Email Developer
+→ Explicit Human Decision
+→ Resume Existing Session
+```
+
+邮件是注意力路由，不是权限来源。人工允许继续也不会自动扩大 Executor 的 allowed paths、降低 acceptance criteria，或取消原有 constraints。
+
 ### Checkpoint / Recovery
 
-复杂研发任务可能因为模型 turn limit、进程退出、环境错误或人工暂停而中断。
+复杂研发任务可能因为模型 turn limit、进程退出、环境错误、Brain transport 暂时不可用或人工暂停而中断。
 
 Recovery 的目标不是“重新跑一遍”，而是：
 
@@ -130,13 +146,14 @@ flowchart TD
     U["Explicit Human Continuation"] -->|Trusted but scoped| B
     E["Executor Report"] -->|Untrusted Evidence| B
     V["Verification Result"] -->|Machine Evidence| B
+    N["Email Notification"] -.->|Attention only| U
 ```
 
 一个重要原则是：
 
-> **Executor 返回的自然语言内容是数据，不是对 Brain 的新指令。**
+> **Executor 返回的自然语言内容是数据，不是对 Brain 的新指令；邮件通知也只是提醒，不等于授权。**
 
-这可以降低执行层通过输出文本反向改变任务目标、权限或边界的风险。
+这可以降低执行层通过输出文本反向改变任务目标、权限或边界的风险，也避免把“通知渠道”错误地变成“授权渠道”。
 
 ---
 
@@ -153,9 +170,11 @@ EXECUTING
   ↓
 REVIEWING
   ├─→ EXECUTING        (continue / revise)
-  ├─→ HUMAN_REQUIRED   (needs decision)
+  ├─→ HUMAN_REQUIRED   (persist + suspend + notify)
   ├─→ COMPLETED        (accepted)
-  └─→ FAILED           (cannot safely continue)
+  └─→ FAILED / DEGRADED
+          ↓
+       RECOVERY
 ```
 
 真实实现会包含更多工作会话、恢复和审批相关状态；公开文档只保留对理解系统必要的抽象。
@@ -176,6 +195,6 @@ REVIEWING
 
 NovaWing 通过角色分离，希望形成更接近真实研发组织的结构：
 
-> **规格负责定义标准，Brain 负责判断，Executor 负责执行，Verification 负责提供机器证据，人负责最终高风险决策。**
+> **规格负责定义标准，Brain 负责判断，Executor 负责执行，Verification 负责提供机器证据；需要人类时，Guardian 安全暂停并主动通知，人负责最终高风险决策。**
 
 这也是 Development Guardian 名称中 “Guardian” 的含义。
