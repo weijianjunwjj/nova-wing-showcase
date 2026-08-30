@@ -8,9 +8,11 @@
 
 如果只看一个内容，就先看这段真实 Work Session。
 
-[![▶ 点击播放 NovaWing Development Guardian 完整演示](../assets/screenshots/03-work-session-final-review.webp)](../assets/screenrecording/nova-wing-development-guardian-demo.mp4)
+[![▶ 在 NovaWing 产品页播放完整 Demo](../assets/screenshots/03-work-session-final-review.webp)](https://weijianjunwjj.github.io/nova-wing-showcase/#demo)
 
-**▶ [点击观看完整运行录屏](../assets/screenrecording/nova-wing-development-guardian-demo.mp4)**
+### **▶ [在产品页直接播放完整运行录屏](https://weijianjunwjj.github.io/nova-wing-showcase/#demo)**
+
+> GitHub 对较大的仓库视频文件不提供稳定的网页预览，因此这里不再跳转到 MP4 文件页。上面的入口会直接打开 NovaWing Showcase 的内嵌播放器，体验更快、更稳定。
 
 录屏展示的是 NovaWing 的真实运行过程，而不是概念动画：AI Executor 在受约束的 Work Session 中执行工程任务，Brain / Reviewer 持续判断，执行结果进入 Verification / Final Review；需要人类判断或基础设施异常时，系统可以安全挂起、通知并从 checkpoint 恢复。
 
