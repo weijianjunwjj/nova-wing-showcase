@@ -1,8 +1,28 @@
 # Demo & Evidence｜真实运行证据
 
-本页集中展示 NovaWing Development Guardian 的真实运行界面与关键工程能力。
+本页集中展示 NovaWing Development Guardian 的真实运行录屏、关键界面与工程证据。
 
 > 核心源码仍保持私有。这里优先展示**真实运行证据**：Work Session、任务边界、执行阶段、日志、降级与恢复，以及 Human-in-the-loop 通知链路。
+
+## 🎬 先看完整运行录屏
+
+如果只看一个内容，就先看这段真实 Work Session。
+
+[![▶ 点击播放 NovaWing Development Guardian 完整演示](../assets/screenshots/03-work-session-final-review.webp)](../assets/screenrecording/nova-wing-development-guardian-demo.mp4)
+
+**▶ [点击观看完整运行录屏](../assets/screenrecording/nova-wing-development-guardian-demo.mp4)**
+
+录屏展示的是 NovaWing 的真实运行过程，而不是概念动画：AI Executor 在受约束的 Work Session 中执行工程任务，Brain / Reviewer 持续判断，执行结果进入 Verification / Final Review；需要人类判断或基础设施异常时，系统可以安全挂起、通知并从 checkpoint 恢复。
+
+**看视频时重点关注：**
+
+- Task、Allowed Paths、Executor 等边界在执行前显式存在；
+- Executor 做完不等于任务完成，仍需 Evidence / Verification / Review；
+- Work Session 的阶段、轮次、Recent Activity 与 Execution Log 可持续观察；
+- Human Required 时系统会保存状态并主动邮件通知开发者；
+- Brain transport 异常时保留 checkpoint，恢复后继续，而不是推倒重来。
+
+---
 
 ## 一条完整的产品叙事
 
@@ -168,8 +188,10 @@ NovaWing 会：
 
 ---
 
-## 关于后续视频
+## 继续深入
 
-截图先作为静态证据保留。
+如果录屏已经让你理解了产品形态，下一步建议按这个顺序阅读：
 
-下一阶段会补充真实运行录屏，用同一个 Task 展示从执行、Review、验证到审批 / Recovery 的连续过程。视频仍会遵循公开边界：不公开核心源码、完整 Prompt / 协议和可能影响知识产权规划的关键实现。
+**[Brain / Executor](brain-executor.md)** → **[Verification & Recovery](verification-recovery.md)** → **[Technical Review Guide](technical-review-guide.md)**
+
+公开展示版不会披露核心源码、完整 Prompt / 协议和可能影响知识产权规划的关键实现。
