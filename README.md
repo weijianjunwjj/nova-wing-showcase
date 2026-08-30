@@ -12,9 +12,9 @@ NovaWing 是一套 **Spec-driven AI software engineering orchestration / control
 
 > 不先讲概念。先看它怎样在真实 Work Session 里执行、Review、验证、暂停与恢复。
 
-[![▶ 点击观看 NovaWing Development Guardian 真实运行录屏](assets/screenshots/03-work-session-final-review.webp)](assets/screenrecording/nova-wing-development-guardian-demo.mp4)
+[![▶ 在产品页播放 NovaWing Development Guardian 真实运行录屏](assets/screenshots/03-work-session-final-review.webp)](https://weijianjunwjj.github.io/nova-wing-showcase/#demo)
 
-**▶ [点击观看完整运行录屏](assets/screenrecording/nova-wing-development-guardian-demo.mp4)** · **[5 张关键界面与证据链](docs/demo.md)**
+**▶ [在产品页直接播放完整运行录屏](https://weijianjunwjj.github.io/nova-wing-showcase/#demo)** · **[5 张关键界面与证据链](docs/demo.md)**
 
 **30 秒抓住 4 个点：**
 
@@ -256,7 +256,7 @@ NovaWing 的工作重点，就是把这些问题从“Prompt 技巧”提升为 
 
 如果只想快速理解项目，建议按下面顺序阅读：
 
-**先看真实运行：** [完整运行录屏](assets/screenrecording/nova-wing-development-guardian-demo.mp4) → [Demo & Evidence](docs/demo.md)
+**先看真实运行：** [产品页完整运行 Demo](https://weijianjunwjj.github.io/nova-wing-showcase/#demo) → [Demo & Evidence](docs/demo.md)
 
 **3 分钟理解核心：** [Brain / Executor](docs/brain-executor.md) → [Spec-driven Development](docs/spec-driven-development.md) → [Task Contract](docs/task-contract.md)
 
