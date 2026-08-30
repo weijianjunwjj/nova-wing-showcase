@@ -2,15 +2,33 @@
 
 [English](README.en.md)
 
-> **Spec-driven AI software engineering orchestration**  
-> 让 GPT 负责“理解、判断与审查”，让 Claude Code / Codex 负责“执行”，并通过规格、任务边界、验证、人工审批、邮件通知与恢复机制，把 AI 编码纳入可控制、可验证、可持续执行的研发闭环。
+> **让 AI 从“会写代码”，走向“在明确规则和人类控制下，持续承担可验收的软件工程任务”。**
+
+NovaWing 是一套 **Spec-driven AI software engineering orchestration / control plane**：GPT 作为 Brain / Reviewer 负责理解、判断与审查，Claude Code / Codex 作为 Executor 负责真实工程执行；规格、任务边界、确定性验证、人工审批、邮件通知与恢复机制共同组成研发闭环。
 
 **Status:** Active Development · **Core Repository:** Private · **This Repository:** Public Showcase
 
-> [!IMPORTANT]
-> 本仓库只公开 NovaWing Development Guardian 的产品理念、高层架构、真实运行截图与脱敏工程实践。核心源码、完整 Prompt / 协议、关键控制策略及可能涉及后续知识产权 / 专利规划的实现细节保持私有。
+## 🎬 先看真实运行 Demo
 
-## 先看真实运行
+> 不先讲概念。先看它怎样在真实 Work Session 里执行、Review、验证、暂停与恢复。
+
+[![▶ 点击观看 NovaWing Development Guardian 真实运行录屏](assets/screenshots/03-work-session-final-review.webp)](assets/screenrecording/nova-wing-development-guardian-demo.mp4)
+
+**▶ [点击观看完整运行录屏](assets/screenrecording/nova-wing-development-guardian-demo.mp4)** · **[5 张关键界面与证据链](docs/demo.md)**
+
+**30 秒抓住 4 个点：**
+
+- **Brain / Executor 分离**：GPT 负责判断与审查，Claude Code / Codex 负责真正动手。
+- **Evidence → Verification → Review**：Executor 不能自己宣布“完成”。
+- **Human Required → Email Developer**：真正需要人类判断时安全挂起，并主动发邮件把开发者叫回来。
+- **Checkpoint / Recovery**：模型服务或 transport 异常时保留可信进度，恢复后继续，而不是从零重跑。
+
+> [!IMPORTANT]
+> 本仓库只公开 NovaWing Development Guardian 的产品理念、高层架构、真实运行截图 / Demo 与脱敏工程实践。核心源码、完整 Prompt / 协议、关键控制策略及可能涉及后续知识产权 / 专利规划的实现细节保持私有。
+
+---
+
+## 真实运行证据
 
 ### NovaWing Launchpad · Trusted Work Session
 
@@ -238,7 +256,7 @@ NovaWing 的工作重点，就是把这些问题从“Prompt 技巧”提升为 
 
 如果只想快速理解项目，建议按下面顺序阅读：
 
-**先看真实产品：** [Demo & Evidence](docs/demo.md)
+**先看真实运行：** [完整运行录屏](assets/screenrecording/nova-wing-development-guardian-demo.mp4) → [Demo & Evidence](docs/demo.md)
 
 **3 分钟理解核心：** [Brain / Executor](docs/brain-executor.md) → [Spec-driven Development](docs/spec-driven-development.md) → [Task Contract](docs/task-contract.md)
 
@@ -295,12 +313,14 @@ nova-wing-showcase/
 ├─ README.en.md
 ├─ index.html
 ├─ assets/
-│  └─ screenshots/
-│     ├─ 01-launchpad-recoverable.webp
-│     ├─ 02-create-work-session.webp
-│     ├─ 03-work-session-final-review.webp
-│     ├─ 04-observability-debug.webp
-│     └─ 05-brain-degraded-recovery.webp
+│  ├─ screenshots/
+│  │  ├─ 01-launchpad-recoverable.webp
+│  │  ├─ 02-create-work-session.webp
+│  │  ├─ 03-work-session-final-review.webp
+│  │  ├─ 04-observability-debug.webp
+│  │  └─ 05-brain-degraded-recovery.webp
+│  └─ screenrecording/
+│     └─ nova-wing-development-guardian-demo.mp4
 ├─ docs/
 │  ├─ architecture.md
 │  ├─ brain-executor.md
